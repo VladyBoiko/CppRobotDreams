@@ -1,6 +1,5 @@
 #include <iostream>
-//#include <random>
-#include <ctime>
+#include <random>
 
 using namespace std;
 
@@ -11,10 +10,9 @@ enum Classes {
 
 int main()
 {
-    //random_device rd;
-    //mt19937 gen(rd());
-    //uniform_int_distribution<int> distribution(1, 2);
-    srand(time(NULL));
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> distribution(1, 2);
 
     string name, className;
     float health = 100, maxHealth = 100;
@@ -64,8 +62,7 @@ int main()
         if (damage > 0) {
             if (characterClass == Classes::Mage) {
                 if (damage > 2 * power) {
-                    /*randomNumber = distribution(gen);*/
-                    randomNumber = rand() % 2;
+                    randomNumber = distribution(gen);
                     cout << randomNumber << endl;
                     if (randomNumber == 1) {
                         if (damage % 2 == 0) {
@@ -108,51 +105,6 @@ int main()
         }
 
         cout << "New character health: " << health << endl;
-        /*if (damage > 0) {
-            if (characterClass == Classes::Warrior) {
-                if (damage % 2 != 0) {
-                    if (health < maxHealth * 0.3 && power < damage * 3) {
-                            health -= (damage * 3 - power);
-                    }
-                    else
-                        health -= damage * 3;
-                }
-                else{
-                    cout << "No damaged." << endl;
-                }
-            }
-            else{
-                if (damage > 2 * power) {
-                    randomNumber = distribution(gen);
-                    cout << randomNumber << endl;
-                    if (randomNumber == 1) {
-                        cout << "No damaged." << endl;
-                    }
-                    else {
-                        if (damage % 2 == 0) {
-                            health -= damage * 2;
-                        }
-                        else {
-                            health -= damage;
-                        }
-                    }
-                }
-                else {
-                    if (damage % 2 == 0) {
-                        health -= damage * 2;
-                    }
-                    else {
-                        health -= damage;
-                    }
-                }
-            }
-        }
-
-        else {
-            cout << "Enter valid damage number(>=0)." << endl;
-        }
-
-        cout << "New character health: " << health << endl;*/
     }
 
     if (health <= 0)
