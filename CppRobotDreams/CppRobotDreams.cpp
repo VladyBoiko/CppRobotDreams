@@ -1,48 +1,30 @@
 ﻿#include <iostream>
-#include <random>
+#include <map>
 #include <vector>
 #include "Functions.h"
+#include "PlayerInteraction.h"
+#include "PlayerVariables.h"
 
 using namespace std;
 
-enum Classes {
-    Mage = 1,
-    Warrior = 2
+struct PlayerFromClan {
+    string playerName;
+    float playerPower;
 };
 
-struct Player {
-    int PlayerId;
-    Classes PlayerClass;
-    float MeleeAtack;
-    float RangeAtack;
-};
+vector<PlayerFromClan> Clan;
 
-int StrongestPlayerId(vector<Player> players) {
+map<string, vector<PlayerFromClan>> clansMap;
 
-    int PlayerPower = players[0].MeleeAtack + players[0].RangeAtack;
-    int PlayerId = players[0].PlayerId;
-
-    for (const Player& player : players)
-    {
-        if ((player.MeleeAtack + player.RangeAtack) > PlayerPower) {
-            PlayerPower = player.MeleeAtack + player.RangeAtack;
-            PlayerId = player.PlayerId;
-        }
-    }
-
-    return PlayerId;
-};
+int GetPlayerCount(const string& ClanName);
+int ClanFight(const string& FirstClanName, const string& SecondClanName);
 
 int main()
 {
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> distribution(1, 2);
-
-    string name = "Character Name", className = "Mage";
-    float health = 100, maxHealth = 100;
-    int characterClass = Classes::Mage, power =  5, damage = 10;
-    vector<int> damageArray;
+    //string name = "Character Name", className = "Mage";
+    //float health = 100, maxHealth = 100;
+    //int power =  5, damage = 10;
+    //vector<int> damageArray;
 
     //cout << "Enter your character name: ";
     //cin >> name;
@@ -50,23 +32,7 @@ int main()
     //cin >> health;
     //maxHealth = health;
 
-    //while (className.empty()) {
-    //    cout << "Enter your character class(1 - Mage, 2 - Warrior): ";
-    //    cin >> characterClass;
-
-    //    switch (characterClass)
-    //    {
-    //        case Classes::Mage:
-    //            className = "Mage";
-    //            break;
-    //        case Classes::Warrior:
-    //            className = "Warrior";
-    //            break;
-    //        default:
-    //            cout << "You entered invalid number of character class. Try again." << endl;
-    //            break;
-    //    }
-    //}
+    //className = ClassName();
 
     //do {
     //    cout << "Enter your character power(max power = 10): ";
@@ -81,53 +47,24 @@ int main()
     //        << power << " power."
     //        << endl << endl;
 
-    //    int randomNumber;
     //    while (health > 0) {
     //        cout << "Enter damage: ";
     //        cin >> damage;
 
     //        //if (damage > 0) {
-    //        if (characterClass == Classes::Mage) {
-    //            if (damage > 2 * power) {
-    //                randomNumber = distribution(gen);
-    //                cout << randomNumber << endl;
-    //                if (randomNumber == 1) {
-    //                    if (damage % 2 == 0) {
-    //                        health -= damage * 2;
-    //                    }
-    //                    else {
-    //                        health -= damage;
-    //                    }
+    //            if (className == "Mage") {
+    //                health = MageDamaged(health, damage, power);
+    //            }
+
+    //            else if (className == "Warrior") {
+    //                if (damage % 2 != 0) {
+    //                    health = WarriorDamaged(health, maxHealth, damage, power);
     //                }
     //                else {
     //                    damage = 0;
     //                    cout << "No damaged." << endl;
     //                }
     //            }
-    //            else {
-    //                if (damage % 2 == 0) {
-    //                    health -= damage * 2;
-    //                }
-    //                else {
-    //                    health -= damage;
-    //                }
-    //            }
-    //        }
-
-    //        else if (characterClass == Classes::Warrior) {
-    //            if (damage % 2 != 0) {
-    //                if (health <= maxHealth * 0.3 && power < damage * 3) {
-    //                    health -= (damage * 3 - power);
-    //                }
-    //                else {
-    //                    health -= damage * 3;
-    //                }
-    //            }
-    //            else {
-    //                damage = 0;
-    //                cout << "No damaged." << endl;
-    //            }
-    //        }
     //        //}
     //        //else {
     //        //    cout << "Enter valid damage number(> 0)." << endl;
@@ -180,63 +117,115 @@ int main()
     //    }
 
     //    cout << "Total ammount of " + type + " is:" <<
-    //        TotalAmountOfDamage(damageArray, type);
+    //        TotalAmountOfDamage(damageArray, type)
+    //        << endl;
     //}
-    vector<Player> players{
-        {1, Mage, 1, 5},
-        {2, Mage, 2, 5},
-        {3, Mage, 1, 7},
-        {4, Warrior, 5, 1},
-        {5, Warrior, 6, 3},
-        {6, Warrior, 6, 1}
-    };
 
-    /*Player player1;
-    player1.PlayerId = 1;
-    player1.PlayerClass = Mage;
-    player1.MeleeAtack = 1;
-    player1.RangeAtack = 5;
-    players.push_back(player1);
+    //vector<Player> players
+    //{
+    //    {1, Mage, 1, 5},
+    //    {2, Mage, 2, 5},
+    //    {3, Mage, 1, 7},
+    //    {4, Warrior, 5, 1},
+    //    {5, Warrior, 6, 3},
+    //    {6, Warrior, 6, 1}
+    //};
 
-    Player player2;
-    player2.PlayerId = 2;
-    player2.PlayerClass = Mage;
-    player2.MeleeAtack = 2;
-    player2.RangeAtack = 5;
-    players.push_back(player2);
+    //cout << "Player with id " << 
+    //    StrongestPlayerId(players)
+    //    << " has the strongest character." 
+    //    << endl;
 
-    Player player3;
-    player3.PlayerId = 3;
-    player3.PlayerClass = Mage;
-    player3.MeleeAtack = 1;
-    player3.RangeAtack = 7;
-    players.push_back(player3);
 
-    Player player4;
-    player4.PlayerId = 4;
-    player4.PlayerClass = Warrior;
-    player4.MeleeAtack = 5;
-    player4.RangeAtack = 1;
-    players.push_back(player4);
+    string clanName, secondClanName, playerName;
+    float  playerPower;
 
-    Player player5;
-    player5.PlayerId = 5;
-    player5.PlayerClass = Warrior;
-    player5.MeleeAtack = 6;
-    player5.RangeAtack = 3;
-    players.push_back(player5);
+    string newPlayrsChecking, newClanChecking;
 
-    Player player6;
-    player6.PlayerId = 6;
-    player6.PlayerClass = Warrior;
-    player6.MeleeAtack = 6;
-    player6.RangeAtack = 1;
-    players.push_back(player6);*/
+    do {
+        cout << "Enter name of clan: ";
+        cin >> clanName;
+        
+        do {
+            cout << "Enter new player name: ";
+            cin >> playerName;
 
-    cout << "Player with id " << 
-        StrongestPlayerId(players)
-        << " has the strongest character." 
-        << endl;
+            cout << "Enter this player power: ";
+            cin >> playerPower;
 
+            PlayerFromClan player = { playerName , playerPower };
+            Clan.push_back(player);
+
+            cout << "Do u wanna enter one more player name?" << endl;
+            cin >> newPlayrsChecking;
+
+        } while (newPlayrsChecking != "no");
+
+        clansMap.insert({ clanName , Clan });
+        Clan.clear();
+
+        cout << "Do u wanna enter one more clan name?" << endl;
+        cin >> newClanChecking;
+    } while (newClanChecking != "no");
+
+    cout << "Enter existed clan name: ";
+    cin >> clanName;
+    cout << "Players in clan " << clanName << ": " 
+        << GetPlayerCount(clanName) << endl;
+
+    cout << "Enter first clan name: ";
+    cin >> clanName;
+    cout << "Enter second clan name: ";
+    cin >> secondClanName;
+    int fightREsult = ClanFight(clanName, secondClanName);
+    if (fightREsult == 1) {
+        cout << clanName <<" clan better." << endl;
+    }
+    else if (fightREsult == -1) {
+        cout << secondClanName << " clan better." << endl;
+    }
+    else if (fightREsult == 0) {
+        cout << "Clans power are equl." << endl;
+    }
     return 0;
+}
+
+int GetPlayerCount(const string& ClanName) {
+    if (clansMap.find(ClanName) != clansMap.end()) {
+        return clansMap[ClanName].size();
+    }
+    else {
+        cout << "Clan not  existed..." << endl;
+        return 0;
+    }
+}
+
+int ClanFight(const string& FirstClanName, const string& SecondClanName){
+    float firstClanPower = 0, secondClanPower = 0;
+
+    if (clansMap.find(FirstClanName) != clansMap.end() &&
+        clansMap.find(SecondClanName) != clansMap.end()) {
+        for (const PlayerFromClan& power : clansMap[FirstClanName]) {
+            firstClanPower += power.playerPower;
+        }
+
+        for (const PlayerFromClan& power : clansMap[SecondClanName]) {
+            secondClanPower += power.playerPower;
+        }
+
+        if (firstClanPower > secondClanPower) {
+            return 1;
+        }
+        else if (firstClanPower < secondClanPower) {
+            return -1;
+        }
+        else if (firstClanPower = secondClanPower) {
+            return 0;
+        }
+    }
+
+    else {
+        cout << "One of the clans not existed..." << endl;
+        return 2;
+    }
 }

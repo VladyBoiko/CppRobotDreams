@@ -129,9 +129,12 @@
   <ItemGroup>
     <ClCompile Include="CppRobotDreams.cpp" />
     <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="PlayerInteraction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Functions.h" />
+    <ClInclude Include="PlayerInteraction.h" />
+    <ClInclude Include="PlayerVariables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,8 +1,25 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "PlayerVariables.h"
 
-void IntegerVectorReader(std::vector<int> Vector, std::string Value) {
+int StrongestPlayerId(const std::vector<Player>& players) {
+
+	float PlayerPower = players[0].MeleeAtack + players[0].RangeAtack;
+	int PlayerId = players[0].PlayerId;
+
+	for (const Player& player : players)
+	{
+		if ((player.MeleeAtack + player.RangeAtack) > PlayerPower) {
+			PlayerPower = player.MeleeAtack + player.RangeAtack;
+			PlayerId = player.PlayerId;
+		}
+	}
+
+	return PlayerId;
+};
+
+void IntegerVectorReader(const std::vector<int>& Vector, const std::string& Value) {
 	std::cout << Value << ":" << std::endl;
 
 	for (int number : Vector)
@@ -13,7 +30,7 @@ void IntegerVectorReader(std::vector<int> Vector, std::string Value) {
 	std::cout << std::endl;
 }
 
-std::vector<int> MaxDamageDealers(std::vector<int> Damage) {
+std::vector<int> MaxDamageDealers(const std::vector<int>& Damage) {
 	std::vector<int> MaxDamage;
 	int max = Damage[0];
 	//auto max = std::max_element(Damage.begin(), Damage.end());
@@ -36,9 +53,9 @@ std::vector<int> MaxDamageDealers(std::vector<int> Damage) {
 	return MaxDamage;
 }
 
-std::vector<int> MinDamageDealers(std::vector<int> Damage) {
+std::vector<int> MinDamageDealers(const std::vector<int>& Damage) {
 	std::vector<int> MinDamage;
-	int min;
+	int min = 0;
 
 	for (int damage : Damage)
 	{
@@ -67,7 +84,7 @@ std::vector<int> MinDamageDealers(std::vector<int> Damage) {
 	return MinDamage;
 }
 
-std::vector<int> HealDealers(std::vector<int> Damage) {
+std::vector<int> HealDealers(const std::vector<int>& Damage) {
 	std::vector<int> Heal;
 
 	for (int i = 0; i < Damage.size(); ++i)
@@ -81,7 +98,7 @@ std::vector<int> HealDealers(std::vector<int> Damage) {
 	return Heal;
 }
 
-std::vector<int> ZeroDamageDealers(std::vector<int> Damage) {
+std::vector<int> ZeroDamageDealers(const std::vector<int>& Damage) {
 	std::vector<int> Nothing;
 
 	for (int i = 0; i < Damage.size(); ++i)
@@ -95,7 +112,7 @@ std::vector<int> ZeroDamageDealers(std::vector<int> Damage) {
 	return Nothing;
 }
 
-int TotalAmountOfDamage(std::vector<int> Damage, std::string type) {
+int TotalAmountOfDamage(const std::vector<int>& Damage, const std::string& type) {
 	int Amount = 0;
 
 	if (type == "heal") {
