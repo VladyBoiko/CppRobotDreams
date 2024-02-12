@@ -7,20 +7,66 @@
 
 using namespace std;
 
-struct PlayerFromClan {
-    string playerName;
-    float playerPower;
+//struct PlayerFromClan {
+//    string playerName;
+//    float playerPower;
+//};
+//
+//vector<PlayerFromClan> clan;
+//
+//map<string, vector<PlayerFromClan>> clansMap;
+
+//int GetPlayerCount(const string& clanName);
+//int ClanFight(const string& firstClanName, const string& secondClanName);
+
+
+class Building {
+public:
+    Building(int _id, int _maxAge, int _initialCost)
+    {
+        this->id = _id;
+        this->maxAge = _maxAge;
+        this->initialCost = _initialCost;
+        this->currentCost = _initialCost;
+        this->currentAge = 0;
+    }
+
+    int GetCost() {
+        return this->currentCost;
+    }
+
+    void ToAge(const int& years){
+        if (years < 0) {
+            return;
+        }
+        this->currentAge += years;
+
+        if (currentAge >= maxAge) {
+            this->Destroy();
+            this->currentCost = 0;
+        }
+        else {
+            this->currentCost -= (this->initialCost * years / this->maxAge);
+            cout << "Current building age: " << this->currentAge << endl;
+        }
+        
+    }
+
+private:
+    int id;
+    int maxAge;
+    int initialCost;
+    int currentCost;
+    int currentAge;
+private:
+    void Destroy() {
+        cout << "Building with id " << id << " has been destroyed." << endl;
+    }
 };
-
-vector<PlayerFromClan> Clan;
-
-map<string, vector<PlayerFromClan>> clansMap;
-
-int GetPlayerCount(const string& ClanName);
-int ClanFight(const string& FirstClanName, const string& SecondClanName);
 
 int main()
 {
+//---------------------------------------------------------------------------------
     //string name = "Character Name", className = "Mage";
     //float health = 100, maxHealth = 100;
     //int power =  5, damage = 10;
@@ -73,7 +119,9 @@ int main()
     //        damageArray.push_back(damage);
     //        cout << "New character health: " << health << endl;
     //    }
-
+//---------------------------------------------------------------------------------
+  
+//---------------------------------------------------------------------------------
     //    cout << "Damage array: ";
     //    for (int damageFromArray : damageArray)
     //    {
@@ -135,9 +183,10 @@ int main()
     //    StrongestPlayerId(players)
     //    << " has the strongest character." 
     //    << endl;
+//---------------------------------------------------------------------------------
 
-
-    string clanName, secondClanName, playerName;
+//---------------------------------------------------------------------------------
+    /*string clanName, secondClanName, playerName;
     float  playerPower;
 
     string newPlayrsChecking, newClanChecking;
@@ -154,15 +203,15 @@ int main()
             cin >> playerPower;
 
             PlayerFromClan player = { playerName , playerPower };
-            Clan.push_back(player);
+            clan.push_back(player);
 
             cout << "Do u wanna enter one more player name?" << endl;
             cin >> newPlayrsChecking;
 
         } while (newPlayrsChecking != "no");
 
-        clansMap.insert({ clanName , Clan });
-        Clan.clear();
+        clansMap.insert({ clanName , clan });
+        clan.clear();
 
         cout << "Do u wanna enter one more clan name?" << endl;
         cin >> newClanChecking;
@@ -177,6 +226,7 @@ int main()
     cin >> clanName;
     cout << "Enter second clan name: ";
     cin >> secondClanName;
+
     int fightREsult = ClanFight(clanName, secondClanName);
     if (fightREsult == 1) {
         cout << clanName <<" clan better." << endl;
@@ -185,47 +235,94 @@ int main()
         cout << secondClanName << " clan better." << endl;
     }
     else if (fightREsult == 0) {
-        cout << "Clans power are equl." << endl;
+        cout << "Clans power are equal." << endl;
+    }*/
+//---------------------------------------------------------------------------------
+    vector<Building> buildings;
+    string newBuildingChecking;
+    int buildingId = 0, buildingMaxAge, buildingInitialCost, years;
+
+    do {
+        cout << "Enter max building age: ";
+        cin >> buildingMaxAge;
+        cout << "Enter building initial cost: ";
+        cin >> buildingInitialCost;
+
+        cout << "Do u wanna create one more building?(enter no to exit)" << endl;
+        cin >> newBuildingChecking;
+
+        Building building(buildingId, buildingMaxAge, buildingInitialCost);
+        buildings.push_back(building);
+        buildingId += 1;
+
+    } while (newBuildingChecking != "no");
+    
+    for (int i = 0; i < buildings.size(); ++i) {
+        cout << "Building " << i << endl;
+        cout << "Building`s cost: " << buildings[i].GetCost() << endl;
+        cout << endl;
     }
+    string isContinue;
+    do {
+        cout << "Enter building id: ";
+        cin >> buildingId;
+        cout << "Building cost: " << buildings[buildingId].GetCost() << endl;
+
+        if (buildings[buildingId].GetCost() == 0) {
+            cout << "The building was already destroyed. Try another one..." << endl;
+            continue;
+        }
+        while (buildings[buildingId].GetCost() > 0) {
+            cout << "Enter an integer by how much you want to age the building: ";
+            cin >> years;
+            buildings[buildingId].ToAge(years);
+            cout << "Current building cost: " << buildings[buildingId].GetCost() << endl;
+        }
+
+        cout << "Do u wanna destroy one more building?(enter no to exit)" << endl;
+        cin >> isContinue;
+    } while (isContinue != "no");
+
+
     return 0;
 }
 
-int GetPlayerCount(const string& ClanName) {
-    if (clansMap.find(ClanName) != clansMap.end()) {
-        return clansMap[ClanName].size();
-    }
-    else {
-        cout << "Clan not  existed..." << endl;
-        return 0;
-    }
-}
-
-int ClanFight(const string& FirstClanName, const string& SecondClanName){
-    float firstClanPower = 0, secondClanPower = 0;
-
-    if (clansMap.find(FirstClanName) != clansMap.end() &&
-        clansMap.find(SecondClanName) != clansMap.end()) {
-        for (const PlayerFromClan& power : clansMap[FirstClanName]) {
-            firstClanPower += power.playerPower;
-        }
-
-        for (const PlayerFromClan& power : clansMap[SecondClanName]) {
-            secondClanPower += power.playerPower;
-        }
-
-        if (firstClanPower > secondClanPower) {
-            return 1;
-        }
-        else if (firstClanPower < secondClanPower) {
-            return -1;
-        }
-        else if (firstClanPower = secondClanPower) {
-            return 0;
-        }
-    }
-
-    else {
-        cout << "One of the clans not existed..." << endl;
-        return 2;
-    }
-}
+//int GetPlayerCount(const string& clanName) {
+//    if (clansMap.find(clanName) != clansMap.end()) {
+//        return clansMap[clanName].size();
+//    }
+//    else {
+//        cout << "Clan not  existed..." << endl;
+//        return 0;
+//    }
+//}
+//
+//int ClanFight(const string& firstClanName, const string& secondClanName){
+//    float firstClanPower = 0, secondClanPower = 0;
+//
+//    if (clansMap.find(firstClanName) != clansMap.end() &&
+//        clansMap.find(secondClanName) != clansMap.end()) {
+//        for (const PlayerFromClan& power : clansMap[firstClanName]) {
+//            firstClanPower += power.playerPower;
+//        }
+//
+//        for (const PlayerFromClan& power : clansMap[secondClanName]) {
+//            secondClanPower += power.playerPower;
+//        }
+//
+//        if (firstClanPower > secondClanPower) {
+//            return 1;
+//        }
+//        else if (firstClanPower < secondClanPower) {
+//            return -1;
+//        }
+//        else if (firstClanPower = secondClanPower) {
+//            return 0;
+//        }
+//    }
+//
+//    else {
+//        cout << "One of the clans not existed..." << endl;
+//        return 2;
+//    }
+//}
