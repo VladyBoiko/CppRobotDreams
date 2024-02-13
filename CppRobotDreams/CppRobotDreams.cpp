@@ -31,7 +31,7 @@ public:
         this->currentAge = 0;
     }
 
-    int GetCost() {
+    int GetCost() const {
         return this->currentCost;
     }
 
@@ -59,7 +59,7 @@ private:
     int currentCost;
     int currentAge;
 private:
-    void Destroy() {
+    void Destroy() const {
         cout << "Building with id " << id << " has been destroyed." << endl;
     }
 };
