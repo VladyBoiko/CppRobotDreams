@@ -1,68 +1,17 @@
 ﻿#include <iostream>
-#include <map>
-#include <vector>
+#include <string>
 #include "Functions.h"
 #include "PlayerInteraction.h"
 #include "PlayerVariables.h"
+#include "Building.cpp"
 
 using namespace std;
 
-//struct PlayerFromClan {
-//    string playerName;
-//    float playerPower;
-//};
-//
 //vector<PlayerFromClan> clan;
-//
 //map<string, vector<PlayerFromClan>> clansMap;
-
+//
 //int GetPlayerCount(const string& clanName);
 //int ClanFight(const string& firstClanName, const string& secondClanName);
-
-
-class Building {
-public:
-    Building(int _id, int _maxAge, int _initialCost)
-    {
-        this->id = _id;
-        this->maxAge = _maxAge;
-        this->initialCost = _initialCost;
-        this->currentCost = _initialCost;
-        this->currentAge = 0;
-    }
-
-    int GetCost() const {
-        return this->currentCost;
-    }
-
-    void ToAge(const int& years){
-        if (years < 0) {
-            return;
-        }
-        this->currentAge += years;
-
-        if (currentAge >= maxAge) {
-            this->Destroy();
-            this->currentCost = 0;
-        }
-        else {
-            this->currentCost -= (this->initialCost * years / this->maxAge);
-            cout << "Current building age: " << this->currentAge << endl;
-        }
-        
-    }
-
-private:
-    int id;
-    int maxAge;
-    int initialCost;
-    int currentCost;
-    int currentAge;
-private:
-    void Destroy() const {
-        cout << "Building with id " << id << " has been destroyed." << endl;
-    }
-};
 
 int main()
 {
@@ -186,7 +135,7 @@ int main()
 //---------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------
-    /*string clanName, secondClanName, playerName;
+  /*  string clanName, secondClanName, playerName;
     float  playerPower;
 
     string newPlayrsChecking, newClanChecking;
@@ -238,7 +187,9 @@ int main()
         cout << "Clans power are equal." << endl;
     }*/
 //---------------------------------------------------------------------------------
-    vector<Building> buildings;
+
+//---------------------------------------------------------------------------------
+ /*   vector<Building> buildings;
     string newBuildingChecking;
     int buildingId = 0, buildingMaxAge, buildingInitialCost, years;
 
@@ -281,23 +232,80 @@ int main()
 
         cout << "Do u wanna destroy one more building?(enter no to exit)" << endl;
         cin >> isContinue;
-    } while (isContinue != "no");
+    } while (isContinue != "no");*/
+//---------------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------------
+    Character character;
 
+    Weapon* riffle = new Riffle();
+    Weapon* shotgun = new Shotgun();
+
+    DamageModifier* multiplicationModifier = new MultiplicationDamageModifier(1.5f);
+    DamageModifier* additionModifier = new AdditionDamageModifier(-5.0f);
+    DamageModifier* parityModifier = new ParityDamageModifier(2.0f);
+
+    character.SetWeapon(riffle);
+
+    Weapon* equippedWeapon = character.GetWeapon();
+    cout << "Character is equipped with: " << equippedWeapon->GetName() 
+        << ". Damage: " << equippedWeapon->GetDamage() << endl;
+
+    int damageModifierType;
+    float currentHealth = 100.0f, damageTomodify = 0.0f;
+
+    while (currentHealth > 0) {
+        cout << "Enter type of modified damage: (1 - multiplicationModifier, 2 - additionModifier, 3 - parityModifier)" << endl;
+        cin >> damageModifierType;
+
+        cout << "Enter damge: ";
+        cin >> damageTomodify;
+
+        switch (damageModifierType)
+        {
+        case 1:
+            character.SetDamageModifier(multiplicationModifier);
+            currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
+            cout << "Current health: " << currentHealth << endl;
+            break;
+        case 2:
+            character.SetDamageModifier(additionModifier);
+            currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
+            cout << "Current health: " << currentHealth << endl;
+            break;
+        case 3:
+            character.SetDamageModifier(parityModifier);
+            currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
+            cout << "Current health: " << currentHealth << endl;
+            break;
+        default:
+            cout << "Invalid input." << endl;
+            break;
+        }
+    }
+   
+    delete riffle;
+    delete shotgun;
+
+    delete multiplicationModifier;
+    delete additionModifier;
+    delete parityModifier;
+//---------------------------------------------------------------------------------
+    
     return 0;
 }
 
-//int GetPlayerCount(const string& clanName) {
+//int GetPlayerCount(const std::string& clanName) {
 //    if (clansMap.find(clanName) != clansMap.end()) {
 //        return clansMap[clanName].size();
 //    }
 //    else {
-//        cout << "Clan not  existed..." << endl;
+//        std::cout << "Clan not  existed..." << std::endl;
 //        return 0;
 //    }
 //}
 //
-//int ClanFight(const string& firstClanName, const string& secondClanName){
+//int ClanFight(const std::string& firstClanName, const std::string& secondClanName) {
 //    float firstClanPower = 0, secondClanPower = 0;
 //
 //    if (clansMap.find(firstClanName) != clansMap.end() &&
@@ -322,7 +330,7 @@ int main()
 //    }
 //
 //    else {
-//        cout << "One of the clans not existed..." << endl;
+//        std::cout << "One of the clans not existed..." << std::endl;
 //        return 2;
 //    }
 //}

@@ -132,6 +132,8 @@
     <ClCompile Include="PlayerInteraction.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Building.cpp" />
+    <ClInclude Include="Damage.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="PlayerInteraction.h" />
     <ClInclude Include="PlayerVariables.h" />

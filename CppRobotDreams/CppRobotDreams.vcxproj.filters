@@ -35,5 +35,11 @@
     <ClInclude Include="PlayerVariables.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Damage.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
