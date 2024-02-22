@@ -236,7 +236,7 @@ int main()
 //---------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------
-    Character character;
+    /*Character character;
 
     Weapon* riffle = new Riffle();
     Weapon* shotgun = new Shotgun();
@@ -289,23 +289,69 @@ int main()
 
     delete multiplicationModifier;
     delete additionModifier;
-    delete parityModifier;
+    delete parityModifier;*/
 //---------------------------------------------------------------------------------
-    
+Character character;
+
+shared_ptr<Weapon> riffle = make_shared<Riffle>();
+shared_ptr<Weapon> shotgun = make_shared<Shotgun>();
+
+shared_ptr<DamageModifier> multiplicationModifier = make_shared<MultiplicationDamageModifier>(1.5f);
+shared_ptr<DamageModifier> additionModifier = make_shared<AdditionDamageModifier>(-5.0f);
+shared_ptr<DamageModifier> parityModifier = make_shared<ParityDamageModifier>(2.0f);
+
+character.SetWeapon(riffle);
+
+shared_ptr<Weapon> equippedWeapon = character.GetWeapon();
+cout << "Character is equipped with: " << equippedWeapon->GetName()
+<< ". Damage: " << equippedWeapon->GetDamage() << endl;
+
+int damageModifierType;
+float currentHealth = 100.0f, damageTomodify = 0.0f;
+
+while (currentHealth > 0) {
+    cout << "Enter type of modified damage: (1 - multiplicationModifier, 2 - additionModifier, 3 - parityModifier)" << endl;
+    cin >> damageModifierType;
+
+    cout << "Enter damge: ";
+    cin >> damageTomodify;
+
+    switch (damageModifierType) {
+    case 1:
+        character.SetDamageModifier(multiplicationModifier);
+        currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
+        cout << "Current health: " << currentHealth << endl;
+        break;
+    case 2:
+        character.SetDamageModifier(additionModifier);
+        currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
+        cout << "Current health: " << currentHealth << endl;
+        break;
+    case 3:
+        character.SetDamageModifier(parityModifier);
+        currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
+        cout << "Current health: " << currentHealth << endl;
+        break;
+    default:
+        cout << "Invalid input." << endl;
+        break;
+    }
+}
+//---------------------------------------------------------------------------------
     return 0;
 }
 
-//int GetPlayerCount(const std::string& clanName) {
+//int GetPlayerCount(const string& clanName) {
 //    if (clansMap.find(clanName) != clansMap.end()) {
 //        return clansMap[clanName].size();
 //    }
 //    else {
-//        std::cout << "Clan not  existed..." << std::endl;
+//        cout << "Clan not  existed..." << endl;
 //        return 0;
 //    }
 //}
 //
-//int ClanFight(const std::string& firstClanName, const std::string& secondClanName) {
+//int ClanFight(const string& firstClanName, const string& secondClanName) {
 //    float firstClanPower = 0, secondClanPower = 0;
 //
 //    if (clansMap.find(firstClanName) != clansMap.end() &&
@@ -330,7 +376,7 @@ int main()
 //    }
 //
 //    else {
-//        std::cout << "One of the clans not existed..." << std::endl;
+//        cout << "One of the clans not existed..." << endl;
 //        return 2;
 //    }
 //}

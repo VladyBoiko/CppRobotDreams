@@ -25,15 +25,15 @@ struct PlayerFromClan {
 class Character
 {
 public:
-    void SetWeapon(Weapon* weapon) {
+    void SetWeapon(std::shared_ptr<Weapon> weapon) {
         this->weapon = weapon;
     }
 
-    Weapon* GetWeapon() const {
+    std::shared_ptr<Weapon> GetWeapon() const {
         return weapon;
     }
 
-    void SetDamageModifier(DamageModifier* modifier) {
+    void SetDamageModifier(std::shared_ptr<DamageModifier> modifier) {
         this->damageModifier = modifier;
     }
 
@@ -41,8 +41,8 @@ public:
         return damageModifier->CalculateDamage(CurrentHealth, Damage);
     }
 private:
-    Weapon* weapon;
-    DamageModifier* damageModifier;
+    std::shared_ptr<Weapon> weapon;
+    std::shared_ptr<DamageModifier> damageModifier;
 };
 
 
