@@ -4,6 +4,7 @@
 #include "PlayerInteraction.h"
 #include "PlayerVariables.h"
 #include "Building.cpp"
+#include "Observer.cpp"
 
 using namespace std;
 
@@ -291,52 +292,64 @@ int main()
     delete additionModifier;
     delete parityModifier;*/
 //---------------------------------------------------------------------------------
-Character character;
+    //Character character;
 
-shared_ptr<Weapon> riffle = make_shared<Riffle>();
-shared_ptr<Weapon> shotgun = make_shared<Shotgun>();
+    //shared_ptr<Weapon> riffle = make_shared<Riffle>();
+    //shared_ptr<Weapon> shotgun = make_shared<Shotgun>();
 
-shared_ptr<DamageModifier> multiplicationModifier = make_shared<MultiplicationDamageModifier>(1.5f);
-shared_ptr<DamageModifier> additionModifier = make_shared<AdditionDamageModifier>(-5.0f);
-shared_ptr<DamageModifier> parityModifier = make_shared<ParityDamageModifier>(2.0f);
+    //shared_ptr<DamageModifier> multiplicationModifier = make_shared<MultiplicationDamageModifier>(1.5f);
+    //shared_ptr<DamageModifier> additionModifier = make_shared<AdditionDamageModifier>(-5.0f);
+    //shared_ptr<DamageModifier> parityModifier = make_shared<ParityDamageModifier>(2.0f);
 
-character.SetWeapon(riffle);
+    //character.SetWeapon(riffle);
 
-shared_ptr<Weapon> equippedWeapon = character.GetWeapon();
-cout << "Character is equipped with: " << equippedWeapon->GetName()
-<< ". Damage: " << equippedWeapon->GetDamage() << endl;
+    //shared_ptr<Weapon> equippedWeapon = character.GetWeapon();
+    //cout << "Character is equipped with: " << equippedWeapon->GetName()
+    //<< ". Damage: " << equippedWeapon->GetDamage() << endl;
 
-int damageModifierType;
-float currentHealth = 100.0f, damageTomodify = 0.0f;
+    //int damageModifierType;
+    //float currentHealth = 100.0f, damageTomodify = 0.0f;
 
-while (currentHealth > 0) {
-    cout << "Enter type of modified damage: (1 - multiplicationModifier, 2 - additionModifier, 3 - parityModifier)" << endl;
-    cin >> damageModifierType;
+    //while (currentHealth > 0) {
+    //    cout << "Enter type of modified damage: (1 - multiplicationModifier, 2 - additionModifier, 3 - parityModifier)" << endl;
+    //    cin >> damageModifierType;
 
-    cout << "Enter damge: ";
-    cin >> damageTomodify;
+    //    cout << "Enter damge: ";
+    //    cin >> damageTomodify;
 
-    switch (damageModifierType) {
-    case 1:
-        character.SetDamageModifier(multiplicationModifier);
-        currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
-        cout << "Current health: " << currentHealth << endl;
-        break;
-    case 2:
-        character.SetDamageModifier(additionModifier);
-        currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
-        cout << "Current health: " << currentHealth << endl;
-        break;
-    case 3:
-        character.SetDamageModifier(parityModifier);
-        currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
-        cout << "Current health: " << currentHealth << endl;
-        break;
-    default:
-        cout << "Invalid input." << endl;
-        break;
-    }
-}
+    //    switch (damageModifierType) {
+    //    case 1:
+    //        character.SetDamageModifier(multiplicationModifier);
+    //        currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
+    //        cout << "Current health: " << currentHealth << endl;
+    //        break;
+    //    case 2:
+    //        character.SetDamageModifier(additionModifier);
+    //        currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
+    //        cout << "Current health: " << currentHealth << endl;
+    //        break;
+    //    case 3:
+    //        character.SetDamageModifier(parityModifier);
+    //        currentHealth = character.GetModifiedDamage(currentHealth, damageTomodify);
+    //        cout << "Current health: " << currentHealth << endl;
+    //        break;
+    //    default:
+    //        cout << "Invalid input." << endl;
+    //        break;
+    //    }
+    //}
+//---------------------------------------------------------------------------------
+    ObserverCharacter player(10);
+
+    DamageBuff buff(5);
+
+    player.attach(&buff);
+
+    cout << "Total damage: " << player.getTotalDamage() << endl;
+
+    player.detach(&buff);
+
+    cout << "Total damage: " << player.getTotalDamage() << endl;
 //---------------------------------------------------------------------------------
     return 0;
 }

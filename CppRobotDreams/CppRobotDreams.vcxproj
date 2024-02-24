@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="CppRobotDreams.cpp" />
     <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="Observer.cpp" />
     <ClCompile Include="PlayerInteraction.cpp" />
   </ItemGroup>
   <ItemGroup>
